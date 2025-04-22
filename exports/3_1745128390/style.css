@@ -1,0 +1,259 @@
+:root {
+    --dark-void: #151419;
+    --liquid-lava: #F58E0F;
+    --gluon-grey: #1B1B1E;
+    --slate-grey: #262626;
+    --dusty-grey: #878787;
+    --snow: #FBFBFB;
+    
+    --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    --transition: all 0.2s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-sans);
+    color: var(--dark-void);
+    background-color: var(--snow);
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Header */
+header {
+    background-color: var(--dark-void);
+    color: var(--snow);
+    padding: 120px 0 80px;
+}
+
+header .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.profile-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: var(--liquid-lava);
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 64px;
+    color: var(--snow);
+}
+
+.name {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.tagline {
+    font-size: 20px;
+    color: var(--dusty-grey);
+    margin-bottom: 24px;
+}
+
+.social-links {
+    display: flex;
+    gap: 16px;
+}
+
+.social-link {
+    color: var(--snow);
+    text-decoration: none;
+    padding: 8px 16px;
+    border: 1px solid var(--dusty-grey);
+    border-radius: 4px;
+    transition: var(--transition);
+}
+
+.social-link:hover {
+    background-color: var(--liquid-lava);
+    border-color: var(--liquid-lava);
+}
+
+/* About */
+.about {
+    padding: 80px 0;
+}
+
+.section-title {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--dark-void);
+}
+
+.section-subtitle {
+    font-size: 18px;
+    color: var(--liquid-lava);
+    margin-bottom: 32px;
+}
+
+.about-content {
+    font-size: 18px;
+    color: var(--slate-grey);
+}
+
+/* Education */
+.education {
+    padding: 80px 0;
+    background-color: #f5f5f7;
+}
+
+.education-item {
+    margin-bottom: 40px;
+}
+
+.education-item:last-child {
+    margin-bottom: 0;
+}
+
+.education-school {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.education-degree {
+    font-size: 18px;
+    color: var(--slate-grey);
+    margin-bottom: 8px;
+}
+
+.education-dates {
+    font-size: 16px;
+    color: var(--dusty-grey);
+}
+
+/* Projects */
+.projects {
+    padding: 80px 0;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 32px;
+}
+
+.project-card {
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: var(--transition);
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.project-img {
+    width: 100%;
+    height: 180px;
+    background-color: var(--slate-grey);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--snow);
+    font-size: 24px;
+}
+
+.project-content {
+    padding: 24px;
+}
+
+.project-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.project-desc {
+    font-size: 16px;
+    color: var(--slate-grey);
+    margin-bottom: 16px;
+}
+
+.project-link {
+    display: inline-block;
+    color: var(--liquid-lava);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.project-link:hover {
+    text-decoration: underline;
+}
+
+/* Contact */
+.contact {
+    padding: 80px 0;
+    background-color: var(--dark-void);
+    color: var(--snow);
+    text-align: center;
+}
+
+.contact .section-title,
+.contact .section-subtitle {
+    color: var(--snow);
+}
+
+.contact-email {
+    font-size: 24px;
+    color: var(--liquid-lava);
+    text-decoration: none;
+}
+
+.contact-email:hover {
+    text-decoration: underline;
+}
+
+/* Footer */
+footer {
+    padding: 24px 0;
+    background-color: var(--gluon-grey);
+    color: var(--dusty-grey);
+    text-align: center;
+    font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    header {
+        padding: 80px 0 60px;
+    }
+    
+    .name {
+        font-size: 36px;
+    }
+    
+    .tagline {
+        font-size: 18px;
+    }
+    
+    .section-title {
+        font-size: 28px;
+    }
+    
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+}
