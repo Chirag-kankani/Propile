@@ -14,7 +14,7 @@ session_start();
             min-height: 100vh;
             background: linear-gradient(135deg, var(--dark-void) 0%, var(--gluon-grey) 100%);
             color: var(--snow);
-            padding: var(--spacing-6) 0;
+            padding: var(--spacing-6);
         }
 
         .contact-grid {
@@ -28,6 +28,12 @@ session_start();
             background-color: rgba(251, 251, 251, 0.05);
             border-radius: var(--border-radius-lg);
             padding: var(--spacing-4);
+            border: 2px solid #F56E0F;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 5px #F56E0F, 0 0 10px #F56E0F;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .contact-form {
@@ -38,7 +44,7 @@ session_start();
 
         .info-item {
             display: flex;
-            align-items: center;
+            /* align-items: center; */
             gap: var(--spacing-3);
             margin-bottom: var(--spacing-3);
             padding: var(--spacing-3);
@@ -50,6 +56,7 @@ session_start();
         .info-item:hover {
             background-color: rgba(251, 251, 251, 0.1);
             transform: translateX(5px);
+            border-color: #F56E0F;
         }
 
         .info-icon {
@@ -84,6 +91,15 @@ session_start();
 
         .back-link:hover {
             color: #e07c00;
+            transform: translateY(-5px);
+        }
+
+        .contact-form {
+            border: 2px solid #F56E0F;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 0 5px #F56E0F, 0 0 10px #F56E0F;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .contact-form form {
@@ -97,7 +113,7 @@ session_start();
         }
 
         .form-label {
-            color: var(--dusty-grey);
+            color: var(--snow);
             font-size: 0.9rem;
         }
 
@@ -124,7 +140,7 @@ session_start();
         }
 
         .submit-btn {
-            background-color: var(--liquid-lava);
+            background-color: #F56E0F;
             color: var(--snow);
             border: none;
             padding: 12px 24px;
@@ -135,7 +151,7 @@ session_start();
         }
 
         .submit-btn:hover {
-            background-color: #e07c00;
+            background-color: #F56E0F;
             transform: translateY(-2px);
         }
     </style>
@@ -150,10 +166,10 @@ session_start();
             <div class="contact-grid">
                 <div class="contact-info">
                     <div class="info-item">
-                        <div class="info-icon">👤</div>
+                        <div class="info-icon">🙋‍♂️</div>
                         <div class="info-content">
                             <h3>Name</h3>
-                            <p>Shivaprasad</p>
+                            <p>Propile Team</p>
                         </div>
                     </div>
 
@@ -161,7 +177,7 @@ session_start();
                         <div class="info-icon">📞</div>
                         <div class="info-content">
                             <h3>Phone</h3>
-                            <p>9113299141</p>
+                            <p>99xxxxxx</p>
                         </div>
                     </div>
 
@@ -169,7 +185,7 @@ session_start();
                         <div class="info-icon">📧</div>
                         <div class="info-content">
                             <h3>Email</h3>
-                            <p>shivaprasadb.gowda@gmail.com</p>
+                            <p>propile@gmail.com</p>
                         </div>
                     </div>
 

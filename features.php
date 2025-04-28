@@ -14,7 +14,7 @@ session_start();
             min-height: 100vh;
             background: linear-gradient(135deg, var(--dark-void) 0%, var(--gluon-grey) 100%);
             color: var(--snow);
-            padding: var(--spacing-6) 0;
+            padding: var(--spacing-6);
         }
 
         .features-grid {
@@ -29,11 +29,18 @@ session_start();
             border-radius: var(--border-radius-lg);
             padding: var(--spacing-4);
             transition: var(--transition-medium);
+            border: 2px solid #F56E0F;
         }
 
         .feature-card:hover {
             transform: translateY(-5px);
             background-color: rgba(251, 251, 251, 0.1);
+            border: 2px solid #F56E0F;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 10px #F56E0F, 0 0 20px #F56E0F, 0 0 30px #F56E0F;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .feature-icon {
@@ -63,6 +70,7 @@ session_start();
         }
 
         .back-link:hover {
+            transform: translateY(-5px);
             color: #e07c00;
         }
     </style>

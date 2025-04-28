@@ -3,6 +3,7 @@ session_start();
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,7 +15,7 @@ session_start();
             min-height: 100vh;
             background: linear-gradient(135deg, var(--dark-void) 0%, var(--gluon-grey) 100%);
             color: var(--snow);
-            padding: var(--spacing-6) 0;
+            padding: var(--spacing-6);
         }
 
         .team-grid {
@@ -30,11 +31,18 @@ session_start();
             padding: var(--spacing-4);
             text-align: center;
             transition: var(--transition-medium);
+            border: 2px solid #F56E0F;
         }
 
         .team-member:hover {
             transform: translateY(-5px);
             background-color: rgba(251, 251, 251, 0.1);
+            border: 2px solid #F56E0F;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 10px #F56E0F, 0 0 20px #F56E0F, 0 0 30px #F56E0F;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .member-avatar {
@@ -70,7 +78,7 @@ session_start();
 
         .back-link {
             display: inline-block;
-            color: var(--liquid-lava);
+            color: #F56E0F;
             text-decoration: none;
             margin-bottom: var(--spacing-4);
             font-weight: 500;
@@ -78,10 +86,16 @@ session_start();
         }
 
         .back-link:hover {
-            color: #e07c00;
+            transform: translateY(-5px);
+            color: #F56E0F;
+        }
+
+        .tagline {
+            color: #F56E0F;
         }
     </style>
 </head>
+
 <body>
     <div class="about-container">
         <div class="container">
@@ -93,16 +107,16 @@ session_start();
                 <div class="team-member">
                     <div class="member-avatar">S</div>
                     <h2 class="member-name">Shivaprasad Basavaraj Gowda</h2>
-                    <p class="member-role">Lead Developer</p>
+                    <p class="member-role">AI-ML Developer</p>
                     <p class="member-bio">
-                        Full-stack developer with expertise in web technologies and system architecture.
+                        AI-ML developer with expertise in Artificial Intelligence and Machine Learning.
                     </p>
                 </div>
 
                 <div class="team-member">
                     <div class="member-avatar">C</div>
                     <h2 class="member-name">Chirag Kankani</h2>
-                    <p class="member-role">Frontend Developer</p>
+                    <p class="member-role">Web Developer and UI/UX Designer</p>
                     <p class="member-bio">
                         Specializes in creating beautiful and responsive user interfaces.
                     </p>
@@ -131,4 +145,5 @@ session_start();
 
     <script src="assets/js/script.js"></script>
 </body>
+
 </html>

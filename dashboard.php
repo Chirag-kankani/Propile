@@ -66,8 +66,8 @@ try {
     $template_db_name = $stmt->fetchColumn(); // e.g., 'Modern Minimal', 'Developer Portfolio'
 
     if ($template_db_name) {
-         // Map DB name back to the simple name used in form values/data attributes
-         switch ($template_db_name) {
+        // Map DB name back to the simple name used in form values/data attributes
+        switch ($template_db_name) {
             case 'Developer Portfolio':
                 $selected_template_name = 'developer';
                 break;
@@ -90,12 +90,14 @@ try {
 }
 
 // Helper function to safely output data into HTML value attributes
-function html_value($value) {
+function html_value($value)
+{
     return htmlspecialchars($value ?? '', ENT_QUOTES, 'UTF-8');
 }
 
 // Helper function to format date for 'month' input (YYYY-MM)
-function format_for_month_input($date_str) {
+function format_for_month_input($date_str)
+{
     if (!empty($date_str)) {
         // Assuming date is stored as YYYY-MM-DD
         return substr($date_str, 0, 7); // Extract YYYY-MM
@@ -106,6 +108,7 @@ function format_for_month_input($date_str) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -115,48 +118,288 @@ function format_for_month_input($date_str) {
     <!-- Add specific dashboard styles if needed -->
     <style>
         /* Add styles from original dashboard.php if they are not in style.css */
-        .dashboard { display: flex; min-height: 100vh; }
-        .sidebar { width: 250px; background-color: var(--dark-void); color: var(--snow); padding: var(--spacing-3); display: flex; flex-direction: column; }
-        .sidebar-logo .logo-text { font-size: 1.5rem; font-weight: 700; }
-        .sidebar-links { margin-top: var(--spacing-4); flex-grow: 1; }
-        .sidebar-link { display: block; padding: 10px 15px; color: var(--dusty-grey); text-decoration: none; border-radius: var(--border-radius-sm); margin-bottom: 5px; transition: var(--transition-fast); }
-        .sidebar-link:hover, .sidebar-link.active { background-color: rgba(251, 251, 251, 0.1); color: var(--snow); }
-        .sidebar-footer { margin-top: auto; }
-        .main-content { flex-grow: 1; padding: var(--spacing-4); background-color: var(--gluon-grey); color: var(--snow); }
-        .dashboard-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-4); }
-        .dashboard-header h1 { color: var(--snow); }
-        .dashboard-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-3); margin-bottom: var(--spacing-5); }
-        .dashboard-card { background-color: rgba(251, 251, 251, 0.05); padding: var(--spacing-3); border-radius: var(--border-radius-md); text-align: center; cursor: pointer; transition: var(--transition-medium); }
-        .dashboard-card:hover { background-color: rgba(251, 251, 251, 0.1); transform: translateY(-3px); }
-        .card-icon { font-size: 2rem; margin-bottom: var(--spacing-1); }
-        .card-title { font-weight: 600; margin-bottom: 5px; }
-        .card-desc { font-size: 0.9rem; color: var(--dusty-grey); }
-        .profile-form { background-color: rgba(251, 251, 251, 0.05); border-radius: var(--border-radius-lg); padding: var(--spacing-4); }
-        .form-header h2 { margin-bottom: var(--spacing-4); text-align: center; color: var(--liquid-lava); }
-        .form-section { margin-bottom: var(--spacing-4); padding-bottom: var(--spacing-3); border-bottom: 1px solid rgba(251, 251, 251, 0.1); }
-        .form-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-        .form-section-title { font-size: 1.25rem; font-weight: 600; margin-bottom: var(--spacing-3); color: var(--liquid-lava); }
-        .form-field { margin-bottom: var(--spacing-3); }
-        .form-label { display: block; margin-bottom: 8px; color: var(--dusty-grey); font-size: 0.9rem; }
-        .form-input, .form-textarea { width: 100%; padding: 12px; background-color: rgba(251, 251, 251, 0.05); border: 1px solid rgba(251, 251, 251, 0.1); border-radius: var(--border-radius-sm); color: var(--snow); transition: var(--transition-fast); }
-        .form-input:focus, .form-textarea:focus { outline: none; border-color: var(--liquid-lava); background-color: rgba(251, 251, 251, 0.1); }
-        .form-textarea { resize: vertical; min-height: 80px; }
-        .form-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--spacing-3); }
-        .add-more-btn { background: none; border: 1px dashed var(--liquid-lava); color: var(--liquid-lava); padding: 8px 15px; border-radius: var(--border-radius-sm); cursor: pointer; transition: var(--transition-fast); }
-        .add-more-btn:hover { background-color: rgba(245, 142, 15, 0.1); }
-        .project-item { border: 1px solid rgba(251, 251, 251, 0.1); padding: var(--spacing-3); border-radius: var(--border-radius-md); margin-bottom: var(--spacing-3); position: relative; }
-        .remove-project-btn { position: absolute; top: 10px; right: 10px; background: #ff4d4d; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; font-weight: bold; line-height: 25px; text-align: center;}
-        .template-selection { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: var(--spacing-3); }
-        .template-card { background-color: rgba(251, 251, 251, 0.08); border-radius: var(--border-radius-md); overflow: hidden; cursor: pointer; border: 2px solid transparent; transition: var(--transition-medium); }
-        .template-card.selected { border-color: var(--liquid-lava); background-color: rgba(245, 142, 15, 0.1); }
-        .template-img { height: 150px; background-color: var(--slate-grey); display: flex; align-items: center; justify-content: center; color: var(--snow); font-weight: 500; }
-        .template-info { padding: var(--spacing-2); }
-        .template-title { font-weight: 600; margin-bottom: 5px; }
-        .template-desc { font-size: 0.85rem; color: var(--dusty-grey); line-height: 1.4; }
-        .form-submit { width: 100%; padding: 15px; background-color: var(--liquid-lava); color: var(--snow); border: none; border-radius: var(--border-radius-sm); font-weight: 600; font-size: 1rem; cursor: pointer; transition: var(--transition-fast); margin-top: var(--spacing-4); }
-        .form-submit:hover { background-color: #e07c00; transform: translateY(-2px); }
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: var(--dark-void);
+            color: var(--snow);
+            padding: var(--spacing-3);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-logo .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .sidebar-links {
+            margin-top: var(--spacing-4);
+            flex-grow: 1;
+        }
+
+        .sidebar-link {
+            display: block;
+            padding: 10px 15px;
+            color: var(--snow);
+            text-decoration: none;
+            border-radius: var(--border-radius-sm);
+            margin-bottom: 5px;
+            transition: var(--transition-fast);
+        }
+
+        .sidebar-link:hover,
+        .sidebar-link.active {
+            background-color: rgba(251, 251, 251, 0.1);
+            color: var(--snow);
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: var(--spacing-4);
+            background-color: var(--gluon-grey);
+            color: var(--snow);
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--spacing-4);
+        }
+
+        .dashboard-header a {
+            background-color: #F56E0F;
+        }
+
+        .dashboard-header h1 {
+            color: var(--snow);
+        }
+
+        .dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-3);
+            margin-bottom: var(--spacing-5);
+        }
+
+        .dashboard-card {
+            background-color: rgba(251, 251, 251, 0.05);
+            cursor: pointer;
+            border: 2px solid #F56E0F;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .dashboard-card:hover {
+            background-color: rgba(251, 251, 251, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 0 10px #F56E0F, 0 0 20px #F56E0F, 0 0 30px #F56E0F;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: var(--spacing-1);
+        }
+
+        .card-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--snow);
+        }
+
+        .card-desc {
+            font-size: 0.9rem;
+            color: var(--dusty-grey);
+        }
+
+        .profile-form {
+            background-color: rgba(251, 251, 251, 0.05);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-4);
+            box-shadow: 0 0 10px #F56E0F, 0 0 20px #F56E0F, 0 0 30px #F56E0F;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .form-header h2 {
+            margin-bottom: var(--spacing-4);
+            text-align: center;
+            color: var(--liquid-lava);
+        }
+
+        .form-section {
+            margin-bottom: var(--spacing-4);
+            padding-bottom: var(--spacing-3);
+            border-bottom: 1px solid rgba(251, 251, 251, 0.1);
+        }
+
+        .form-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .form-section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-3);
+            color: var(--liquid-lava);
+        }
+
+        .form-field {
+            margin-bottom: var(--spacing-3);
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--snow);
+            font-size: 0.9rem;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 12px;
+            background-color: rgba(251, 251, 251, 0.05);
+            border: 1px solid rgba(251, 251, 251, 0.1);
+            border-radius: var(--border-radius-sm);
+            color: var(--snow);
+            transition: var(--transition-fast);
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--liquid-lava);
+            background-color: rgba(251, 251, 251, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-3);
+        }
+
+        .add-more-btn {
+            background: none;
+            border: 1px dashed var(--liquid-lava);
+            color: var(--liquid-lava);
+            padding: 8px 15px;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            transition: var(--transition-fast);
+        }
+
+        .add-more-btn:hover {
+            background-color: rgba(245, 142, 15, 0.1);
+        }
+
+        .project-item {
+            border: 1px solid rgba(251, 251, 251, 0.1);
+            padding: var(--spacing-3);
+            border-radius: var(--border-radius-md);
+            margin-bottom: var(--spacing-3);
+            position: relative;
+        }
+
+        .remove-project-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            line-height: 25px;
+            text-align: center;
+        }
+
+        .template-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-3);
+        }
+
+        .template-card {
+            background-color: rgba(251, 251, 251, 0.08);
+            border-radius: var(--border-radius-md);
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: var(--transition-medium);
+        }
+
+        .template-card.selected {
+            border-color: var(--liquid-lava);
+            background-color: rgba(245, 142, 15, 0.1);
+        }
+
+        .template-img {
+            height: 150px;
+            background-color: var(--slate-grey);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--snow);
+            font-weight: 500;
+        }
+
+        .template-info {
+            padding: var(--spacing-2);
+        }
+
+        .template-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .template-desc {
+            font-size: 0.85rem;
+            color: var(--dusty-grey);
+            line-height: 1.4;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 15px;
+            background-color: #F56E0F;
+            color: var(--snow);
+            border: none;
+            border-radius: var(--border-radius-sm);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition-fast);
+            margin-top: var(--spacing-4);
+        }
+
+        .form-submit:hover {
+            background-color: #F56E0F;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
+
 <body>
     <div class="dashboard">
         <div class="sidebar">
@@ -174,7 +417,7 @@ function format_for_month_input($date_str) {
                 <a href="features.php" class="sidebar-link">
                     <span>Features</span>
                 </a>
-                 <a href="preview_portfolio.php" class="sidebar-link">
+                <a href="preview_portfolio.php" class="sidebar-link">
                     <span>Preview</span>
                 </a>
                 <!-- <a href="templates.php" class="sidebar-link">
@@ -208,22 +451,26 @@ function format_for_month_input($date_str) {
 
             <!-- Overview Cards (Optional - can be removed if not needed) -->
             <div class="dashboard-cards">
-                <div class="dashboard-card" onclick="document.getElementById('form-section-education').scrollIntoView({ behavior: 'smooth' });">
+                <div class="dashboard-card"
+                    onclick="document.getElementById('form-section-education').scrollIntoView({ behavior: 'smooth' });">
                     <div class="card-icon">📚</div>
                     <h3 class="card-title">Education</h3>
                     <p class="card-desc">Add your educational background.</p>
                 </div>
-                <div class="dashboard-card" onclick="document.getElementById('form-section-portfolio').scrollIntoView({ behavior: 'smooth' });">
+                <div class="dashboard-card"
+                    onclick="document.getElementById('form-section-portfolio').scrollIntoView({ behavior: 'smooth' });">
                     <div class="card-icon">👤</div>
                     <h3 class="card-title">Bio & Links</h3>
                     <p class="card-desc">Add your bio and social links.</p>
                 </div>
-                <div class="dashboard-card" onclick="document.getElementById('form-section-projects').scrollIntoView({ behavior: 'smooth' });">
+                <div class="dashboard-card"
+                    onclick="document.getElementById('form-section-projects').scrollIntoView({ behavior: 'smooth' });">
                     <div class="card-icon">🚀</div>
                     <h3 class="card-title">Projects</h3>
                     <p class="card-desc">Showcase your projects.</p>
                 </div>
-                 <div class="dashboard-card" onclick="document.getElementById('form-section-template').scrollIntoView({ behavior: 'smooth' });">
+                <div class="dashboard-card"
+                    onclick="document.getElementById('form-section-template').scrollIntoView({ behavior: 'smooth' });">
                     <div class="card-icon">🎨</div>
                     <h3 class="card-title">Template</h3>
                     <p class="card-desc">Choose your portfolio style.</p>
@@ -246,30 +493,38 @@ function format_for_month_input($date_str) {
 
                         <div class="form-field">
                             <label class="form-label" for="school">School/University</label>
-                            <input type="text" class="form-input" id="school" name="school" placeholder="e.g., Harvard University" value="<?php echo html_value($education['institution'] ?? ''); ?>">
+                            <input type="text" class="form-input" id="school" name="school"
+                                placeholder="e.g., Harvard University"
+                                value="<?php echo html_value($education['institution'] ?? ''); ?>">
                         </div>
 
                         <div class="form-row">
                             <div class="form-field">
                                 <label class="form-label" for="degree">Degree</label>
-                                <input type="text" class="form-input" id="degree" name="degree" placeholder="e.g., Bachelor of Science" value="<?php echo html_value($education['degree'] ?? ''); ?>">
+                                <input type="text" class="form-input" id="degree" name="degree"
+                                    placeholder="e.g., Bachelor of Science"
+                                    value="<?php echo html_value($education['degree'] ?? ''); ?>">
                             </div>
 
                             <div class="form-field">
                                 <label class="form-label" for="field">Field of Study</label>
-                                <input type="text" class="form-input" id="field" name="field" placeholder="e.g., Computer Science" value="<?php echo html_value($education['field'] ?? ''); ?>">
+                                <input type="text" class="form-input" id="field" name="field"
+                                    placeholder="e.g., Computer Science"
+                                    value="<?php echo html_value($education['field'] ?? ''); ?>">
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-field">
                                 <label class="form-label" for="start-date">Start Date</label>
-                                <input type="month" class="form-input" id="start-date" name="start_date" value="<?php echo format_for_month_input($education['start_date'] ?? ''); ?>">
+                                <input type="month" class="form-input" id="start-date" name="start_date"
+                                    value="<?php echo format_for_month_input($education['start_date'] ?? ''); ?>">
                             </div>
 
                             <div class="form-field">
                                 <label class="form-label" for="end-date">End Date</label>
-                                <input type="month" class="form-input" id="end-date" name="end_date" value="<?php echo format_for_month_input($education['end_date'] ?? ''); ?>">
+                                <input type="month" class="form-input" id="end-date" name="end_date"
+                                    value="<?php echo format_for_month_input($education['end_date'] ?? ''); ?>">
                             </div>
                         </div>
                     </div>
@@ -286,23 +541,31 @@ function format_for_month_input($date_str) {
 
                         <div class="form-field">
                             <label class="form-label" for="bio">Bio/About Me</label>
-                            <textarea class="form-input form-textarea" id="bio" name="bio" rows="4" placeholder="Tell us about yourself, your skills, and your career goals"><?php echo html_value($profile['bio'] ?? ''); ?></textarea>
+                            <textarea class="form-input form-textarea" id="bio" name="bio" rows="4"
+                                placeholder="Tell us about yourself, your skills, and your career goals"><?php echo html_value($profile['bio'] ?? ''); ?></textarea>
                         </div>
 
                         <div class="form-field">
-                            <label class="form-label" for="portfolio-link">Portfolio Link (Optional external link)</label>
-                            <input type="url" class="form-input" id="portfolio-link" name="portfolio_link" placeholder="https://your-other-portfolio.com" value="<?php echo html_value($social_links['portfolio'] ?? ''); ?>">
+                            <label class="form-label" for="portfolio-link">Portfolio Link (Optional external
+                                link)</label>
+                            <input type="url" class="form-input" id="portfolio-link" name="portfolio_link"
+                                placeholder="https://your-other-portfolio.com"
+                                value="<?php echo html_value($social_links['portfolio'] ?? ''); ?>">
                         </div>
 
-                         <div class="form-field">
+                        <div class="form-field">
                             <label class="form-label" for="leetcode-link">LeetCode Profile Link</label>
-                            <input type="url" class="form-input" id="leetcode-link" name="leetcode_link" placeholder="https://leetcode.com/yourusername" value="<?php echo html_value($social_links['leetcode'] ?? ''); ?>">
+                            <input type="url" class="form-input" id="leetcode-link" name="leetcode_link"
+                                placeholder="https://leetcode.com/yourusername"
+                                value="<?php echo html_value($social_links['leetcode'] ?? ''); ?>">
                         </div>
 
-                         <div class="form-field">
+                        <div class="form-field">
                             <label class="form-label" for="linkedin-link">LinkedIn Profile Link</label>
                             <!-- Make sure name matches what process_profile expects, e.g., social[linkedin] or just linkedin -->
-                            <input type="url" class="form-input" id="linkedin-link" name="social[linkedin]" placeholder="https://linkedin.com/in/yourusername" value="<?php echo html_value($social_links['linkedin'] ?? ''); ?>">
+                            <input type="url" class="form-input" id="linkedin-link" name="social[linkedin]"
+                                placeholder="https://linkedin.com/in/yourusername"
+                                value="<?php echo html_value($social_links['linkedin'] ?? ''); ?>">
                         </div>
                     </div>
                     <!-- ======================== -->
@@ -320,39 +583,54 @@ function format_for_month_input($date_str) {
                             <?php if (empty($projects)): ?>
                                 <!-- Display one empty block if no projects exist -->
                                 <div class="project-item">
-                                     <button type="button" class="remove-project-btn" onclick="removeProject(this)" style="display: none;">×</button> <!-- Hide remove button for the first item initially -->
+                                    <button type="button" class="remove-project-btn" onclick="removeProject(this)"
+                                        style="display: none;">×</button>
+                                    <!-- Hide remove button for the first item initially -->
                                     <div class="form-row">
                                         <div class="form-field">
                                             <label class="form-label" for="project-name-1">Project Name</label>
-                                            <input type="text" class="form-input project-name-input" id="project-name-1" name="project_name[]" placeholder="My Awesome Project">
+                                            <input type="text" class="form-input project-name-input" id="project-name-1"
+                                                name="project_name[]" placeholder="My Awesome Project">
                                         </div>
                                         <div class="form-field">
                                             <label class="form-label" for="project-link-1">GitHub Link</label>
-                                            <input type="url" class="form-input" id="project-link-1" name="project_link[]" placeholder="https://github.com/yourusername/project">
+                                            <input type="url" class="form-input" id="project-link-1" name="project_link[]"
+                                                placeholder="https://github.com/yourusername/project">
                                         </div>
                                     </div>
                                     <div class="form-field">
                                         <label class="form-label" for="project-desc-1">Description</label>
-                                        <textarea class="form-input form-textarea" id="project-desc-1" name="project_desc[]" rows="3" placeholder="Brief description of your project"></textarea>
+                                        <textarea class="form-input form-textarea" id="project-desc-1" name="project_desc[]"
+                                            rows="3" placeholder="Brief description of your project"></textarea>
                                     </div>
                                 </div>
                             <?php else: ?>
-                                <?php foreach ($projects as $index => $project): $item_id = $index + 1; ?>
+                                <?php foreach ($projects as $index => $project):
+                                    $item_id = $index + 1; ?>
                                     <div class="project-item">
-                                         <button type="button" class="remove-project-btn" onclick="removeProject(this)" <?php echo ($index === 0 && count($projects) === 1) ? 'style="display: none;"' : ''; ?>>×</button>
+                                        <button type="button" class="remove-project-btn" onclick="removeProject(this)" <?php echo ($index === 0 && count($projects) === 1) ? 'style="display: none;"' : ''; ?>>×</button>
                                         <div class="form-row">
                                             <div class="form-field">
-                                                <label class="form-label" for="project-name-<?php echo $item_id; ?>">Project Name</label>
-                                                <input type="text" class="form-input project-name-input" id="project-name-<?php echo $item_id; ?>" name="project_name[]" value="<?php echo html_value($project['title']); ?>">
+                                                <label class="form-label" for="project-name-<?php echo $item_id; ?>">Project
+                                                    Name</label>
+                                                <input type="text" class="form-input project-name-input"
+                                                    id="project-name-<?php echo $item_id; ?>" name="project_name[]"
+                                                    value="<?php echo html_value($project['title']); ?>">
                                             </div>
                                             <div class="form-field">
-                                                <label class="form-label" for="project-link-<?php echo $item_id; ?>">GitHub Link</label>
-                                                <input type="url" class="form-input" id="project-link-<?php echo $item_id; ?>" name="project_link[]" value="<?php echo html_value($project['github_link']); ?>">
+                                                <label class="form-label" for="project-link-<?php echo $item_id; ?>">GitHub
+                                                    Link</label>
+                                                <input type="url" class="form-input" id="project-link-<?php echo $item_id; ?>"
+                                                    name="project_link[]"
+                                                    value="<?php echo html_value($project['github_link']); ?>">
                                             </div>
                                         </div>
                                         <div class="form-field">
-                                            <label class="form-label" for="project-desc-<?php echo $item_id; ?>">Description</label>
-                                            <textarea class="form-input form-textarea" id="project-desc-<?php echo $item_id; ?>" name="project_desc[]" rows="3"><?php echo html_value($project['description']); ?></textarea>
+                                            <label class="form-label"
+                                                for="project-desc-<?php echo $item_id; ?>">Description</label>
+                                            <textarea class="form-input form-textarea" id="project-desc-<?php echo $item_id; ?>"
+                                                name="project_desc[]"
+                                                rows="3"><?php echo html_value($project['description']); ?></textarea>
                                         </div>
                                     </div>
                                 <?php endforeach; ?>
@@ -366,15 +644,16 @@ function format_for_month_input($date_str) {
                     <!-- ======================== -->
 
 
-                     <!-- ======================== -->
+                    <!-- ======================== -->
                     <!-- Template Section        -->
                     <!-- ======================== -->
                     <div class="form-section" id="form-section-template">
                         <h3 class="form-section-title">Select a Template</h3>
 
                         <div class="template-selection">
-                             <!-- Use data-template value that matches 'minimal', 'developer', 'creative' -->
-                            <div class="template-card <?php echo ($selected_template_name === 'minimal') ? 'selected' : ''; ?>" data-template="minimal">
+                            <!-- Use data-template value that matches 'minimal', 'developer', 'creative' -->
+                            <div class="template-card <?php echo ($selected_template_name === 'minimal') ?  : ''; ?>"
+                                data-template="minimal">
                                 <div class="template-img">Minimal Template Preview</div>
                                 <div class="template-info">
                                     <h4 class="template-title">Modern Minimal</h4>
@@ -382,7 +661,8 @@ function format_for_month_input($date_str) {
                                 </div>
                             </div>
 
-                            <div class="template-card <?php echo ($selected_template_name === 'developer') ? 'selected' : ''; ?>" data-template="developer">
+                            <div class="template-card <?php echo ($selected_template_name === 'developer') ?  : ''; ?>"
+                                data-template="developer">
                                 <div class="template-img">Developer Template Preview</div>
                                 <div class="template-info">
                                     <h4 class="template-title">Developer Portfolio</h4>
@@ -390,7 +670,8 @@ function format_for_month_input($date_str) {
                                 </div>
                             </div>
 
-                            <div class="template-card <?php echo ($selected_template_name === 'creative') ? 'selected' : ''; ?>" data-template="creative">
+                            <div class="template-card <?php echo ($selected_template_name === 'creative') ?  : ''; ?>"
+                                data-template="creative">
                                 <div class="template-img">Creative Template Preview</div>
                                 <div class="template-info">
                                     <h4 class="template-title">Creative Portfolio</h4>
@@ -400,9 +681,10 @@ function format_for_month_input($date_str) {
                         </div>
 
                         <!-- Hidden input to store the selected template's simple name -->
-                        <input type="hidden" id="selected-template" name="selected_template" value="<?php echo html_value($selected_template_name); ?>">
+                        <input type="hidden" id="selected-template" name="selected_template"
+                            value="<?php echo html_value($selected_template_name); ?>">
                     </div>
-                     <!-- ======================== -->
+                    <!-- ======================== -->
                     <!-- End Template Section     -->
                     <!-- ======================== -->
 
@@ -430,7 +712,7 @@ function format_for_month_input($date_str) {
             const items = projectsContainer.querySelectorAll('.project-item');
             items.forEach((item, index) => {
                 const removeBtn = item.querySelector('.remove-project-btn');
-                 if (removeBtn) {
+                if (removeBtn) {
                     // Show remove button only if it's not the last remaining item
                     removeBtn.style.display = items.length > 1 ? 'block' : 'none';
                 }
@@ -445,13 +727,13 @@ function format_for_month_input($date_str) {
                     }
                 });
             });
-             projectCounter = items.length; // Recalculate counter
+            projectCounter = items.length; // Recalculate counter
         }
 
 
         function removeProject(button) {
             const projectItem = button.closest('.project-item');
-             if (projectItem && projectsContainer.children.length > 1) { // Prevent removing the last one
+            if (projectItem && projectsContainer.children.length > 1) { // Prevent removing the last one
                 projectItem.remove();
                 updateRemoveButtons(); // Update button visibility after removal
             }
@@ -482,8 +764,8 @@ function format_for_month_input($date_str) {
             updateRemoveButtons(); // Ensure remove buttons are correctly shown/hidden
         });
 
-         // Initialize remove button visibility on page load
-         updateRemoveButtons();
+        // Initialize remove button visibility on page load
+        updateRemoveButtons();
 
         // --- Template Selection Logic ---
         const templateCards = document.querySelectorAll('.template-card');
@@ -515,4 +797,5 @@ function format_for_month_input($date_str) {
 
     </script>
 </body>
+
 </html>

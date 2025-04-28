@@ -8,29 +8,42 @@ if (isset($_SESSION['user_id'])) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ProPile - Your Professional Portfolio Builder</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <style>
+        .feature {
+            border: 2px solid #F56E0F;
+        }
+
+        .feature:hover {
+            border: 2px solid #F56E0F;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 10px #F56E0F, 0 0 20px #F56E0F;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+    </style>
 </head>
+
 <body>
     <div class="welcome-container">
         <div class="welcome-content">
             <div class="logo-container">
-                <div class="logo">
-                    <span class="logo-text">ProPile</span>
-                </div>
             </div>
-            <h1 class="main-heading">ProPile</h1>
-            <p class="tagline">Build your professional portfolio in minutes, not hours</p>
-            
+            <h1 class="main-heading" style="font-size: 90px; padding-bottom: 45px; color: #F56E0F;">ProPile</h1>
+            <p class="tagline" style="color: #fff">Build your professional portfolio in minutes, not hours</p>
+
             <div class="welcome-buttons">
-                <a href="login.php" class="btn btn-primary">Login</a>
-                <a href="signup.php" class="btn btn-secondary">Sign Up</a>
+                <a href="login.php" class="btn btn-primary" style="background-color: #F56E0F">Login</a>
+                <a href="login.php" class="btn btn-secondary">Sign Up</a>
             </div>
-            
+
             <div class="welcome-features">
                 <div class="feature">
                     <div class="feature-icon">📚</div>
@@ -55,7 +68,8 @@ if (isset($_SESSION['user_id'])) {
             </div>
         </div>
     </div>
-    
+
     <script src="assets/js/script.js"></script>
 </body>
+
 </html>
