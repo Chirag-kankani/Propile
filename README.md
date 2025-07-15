@@ -2,6 +2,7 @@
 
 Create your own personalized portfolio website in minutes—no coding required! Just fill in a simple form, select a theme, and export your complete portfolio as ready-to-use HTML, CSS, and JavaScript code. Focus more on upskilling, not website building.
 
+
 ✨ Features
 
 • Fast & Easy: Build a portfolio in under 5 minutes.
@@ -14,6 +15,7 @@ Create your own personalized portfolio website in minutes—no coding required! 
 
 • Fully Editable: Exported files are easy to tweak to match your style.
 
+
 🧑‍💻 Who Is This For?
 
 • Students building their first online presence
@@ -21,6 +23,7 @@ Create your own personalized portfolio website in minutes—no coding required! 
 • Developers who want a quick portfolio solution
 
 • Anyone needing a beautiful personal website without the hassle
+
 
 🛠️ How It Works
 
@@ -41,6 +44,7 @@ Create your own personalized portfolio website in minutes—no coding required! 
 • Customize or Deploy
 
 • Use your preferred code editor or hosting service
+
 
 📌 Tech Stack
 
@@ -63,6 +67,7 @@ Create your own personalized portfolio website in minutes—no coding required! 
 • Push to the branch (git push origin feature-name)
 
 • Open a Pull Request
+
 
 🙌 Support & Feedback
 
